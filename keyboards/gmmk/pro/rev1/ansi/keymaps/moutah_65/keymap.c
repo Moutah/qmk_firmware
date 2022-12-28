@@ -27,6 +27,7 @@ enum layers {
 #define T_CTLF4 LCTL_T(KC_F4)
 
 #define _WHITE 255, 255, 255
+#define _OFF 0, 0, 0
 // orange
 #define _PRIMARY_COLOR 195, 74, 0
 // green
@@ -239,12 +240,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // *** Lead key
 
+bool is_leader_listening;
+
 LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
     LEADER_DICTIONARY() {
         leading = false;
-        leader_end();
+        is_leader_listening = false;
 
         // c -> markdown code block
         SEQ_ONE_KEY(KC_C) {
@@ -270,7 +273,18 @@ void matrix_scan_user(void) {
         SEQ_ONE_KEY(KC_LEAD) {
             tap_code(KC_CAPS);
         }
+
+        leader_end();
     }
+}
+
+
+void leader_start(void) {
+    is_leader_listening = true;
+}
+
+void leader_end(void) {
+    is_leader_listening = false;
 }
 
 // *** RGB
@@ -285,8 +299,21 @@ bool rgb_matrix_indicators_user(void) {
     //  87, led 07                                                                                                                                                                      88, led 18
     //  91, led 08                                                                                                                                                                      92, led 19
 
-    uint8_t current_layer = get_highest_layer(layer_state);
+    // leader key
+    if (is_leader_listening) {
+        rgb_matrix_set_color_all(_OFF);
 
+        rgb_matrix_set_color(3, _WHITE); // caps lock
+        rgb_matrix_set_color(29, _WHITE); // 5
+        rgb_matrix_set_color(22, _WHITE); // c
+        rgb_matrix_set_color(38, _WHITE); // n
+
+        return false;
+    }
+
+
+    // by layer
+    uint8_t current_layer = get_highest_layer(layer_state);
     switch (current_layer) {
         case _WINDOWS:
         case _WINDOWS_SUP:
@@ -340,6 +367,7 @@ bool rgb_matrix_indicators_user(void) {
             break;
     }
 
+    // caps lock
     if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
         rgb_matrix_set_color(72, _WHITE); // Home
         rgb_matrix_set_color(75, _WHITE); // PgUp
