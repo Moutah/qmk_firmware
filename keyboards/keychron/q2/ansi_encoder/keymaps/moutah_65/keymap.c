@@ -26,6 +26,7 @@ enum layers {
 #define T_CTLF4 LCTL_T(KC_F4)
 
 #define _WHITE 255, 255, 255
+#define _OFF 0, 0, 0
 // light blue
 #define _PRIMARY_COLOR 31, 77, 65
 // deep blue
@@ -231,12 +232,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // *** Lead key
 
+bool is_leader_listening;
+
 LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
     LEADER_DICTIONARY() {
         leading = false;
-        leader_end();
+        is_leader_listening = false;
 
         // c -> markdown code block
         SEQ_ONE_KEY(KC_C) {
@@ -262,7 +265,18 @@ void matrix_scan_user(void) {
         SEQ_ONE_KEY(KC_LEAD) {
             tap_code(KC_CAPS);
         }
+
+        leader_end();
     }
+}
+
+
+void leader_start(void) {
+    is_leader_listening = true;
+}
+
+void leader_end(void) {
+    is_leader_listening = false;
 }
 
 // *** RGB
@@ -274,8 +288,20 @@ bool rgb_matrix_indicators_user(void) {
     //  44, Sh_L  45, Z     46, X       47, C    48, V    49, B       50, N    51, M    52, ,<      53, .<   54, /?               55, Sh_R   56, Up
     //  57, Ct_L  58,Win_L  59, Alt_L                     60, SPACE                     61, Alt_R   62, FN             63, Ct_R   64, Left   65, Down      66, Right
 
-    uint8_t current_layer = get_highest_layer(layer_state);
+    // leader key
+    if (is_leader_listening) {
+        rgb_matrix_set_color_all(_OFF);
 
+        rgb_matrix_set_color(30, _WHITE); // caps lock
+        rgb_matrix_set_color(5, _WHITE); // 5
+        rgb_matrix_set_color(47, _WHITE); // c
+        rgb_matrix_set_color(50, _WHITE); // n
+
+        return false;
+    }
+
+    // by layer
+    uint8_t current_layer = get_highest_layer(layer_state);
     switch (current_layer) {
 
         case _WINDOWS:
@@ -330,6 +356,7 @@ bool rgb_matrix_indicators_user(void) {
             break;
     }
 
+    // caps lock
     if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
         rgb_matrix_set_color(29, _WHITE); // PgUp
         rgb_matrix_set_color(43, _WHITE); // PgDn
