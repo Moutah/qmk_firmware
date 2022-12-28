@@ -42,6 +42,8 @@ enum layers {
 #define _RGB_FUNCTION_COLOR 128, 51, 51
 // electric blue
 #define _FN_KEYS_COLOR 0, 113, 178
+// electric blue
+#define _MEDIA_COLOR 255, 255, 12
 
 // *** Layers
 
@@ -82,10 +84,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_ADVANCED] = LAYOUT_ansi_67(
         QK_BOOT, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_SLEP,          _______,
-        _______, _______, TO_WIN,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, _______, RGB_SAI, _______, _______, _______, RGB_HUI, _______, _______, RGB_VAI, _______, _______,          _______,          _______,
-        _______,          _______, RGB_SAD, _______, _______, _______, RGB_HUD, TO_MAC,  _______, RGB_VAD, _______,          _______, RGB_SPI,
-        TO_LOK,  _______, _______,                            DB_TOGG,                            _______, _______, _______, RGB_RMOD,RGB_SPD, RGB_MOD
+        _______, _______, TO_WIN,  _______, RGB_MOD, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        _______, _______, RGB_SAI, _______, RGB_SPI, _______, RGB_HUI, _______, _______, RGB_VAI, _______, _______,          _______,          _______,
+        _______,          _______, RGB_SAD, _______, RGB_SPD, _______, RGB_HUD, TO_MAC,  _______, RGB_VAD, _______,          _______, _______,
+        TO_LOK,  _______, _______,                            _______,                            _______, _______, _______, KC_MPRV, _______, KC_MNXT
     ),
 
 };
@@ -308,13 +310,14 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(12, _FN_KEYS_COLOR);
 
             // rgb functions
-            rgb_matrix_set_color(32, _RGB_FUNCTION_COLOR);
-            rgb_matrix_set_color(36, _RGB_FUNCTION_COLOR);
-            rgb_matrix_set_color(39, _RGB_FUNCTION_COLOR);
-            rgb_matrix_set_color(56, _RGB_FUNCTION_COLOR);
-            rgb_matrix_set_color(64, _RGB_FUNCTION_COLOR);
-            rgb_matrix_set_color(65, _RGB_FUNCTION_COLOR);
-            rgb_matrix_set_color(66, _RGB_FUNCTION_COLOR);
+            rgb_matrix_set_color(36, _RGB_FUNCTION_COLOR); // H
+            rgb_matrix_set_color(32, _RGB_FUNCTION_COLOR); // S
+            rgb_matrix_set_color(39, _RGB_FUNCTION_COLOR); // L
+            rgb_matrix_set_color(19, _RGB_FUNCTION_COLOR); // R (mode)
+            rgb_matrix_set_color(34, _RGB_FUNCTION_COLOR); // F (speed)
+
+            rgb_matrix_set_color(64, _MEDIA_COLOR); // left
+            rgb_matrix_set_color(66, _MEDIA_COLOR); // right
 
             // bootloader
             rgb_matrix_set_color(0, _BOOTLOADER_COLOR);
