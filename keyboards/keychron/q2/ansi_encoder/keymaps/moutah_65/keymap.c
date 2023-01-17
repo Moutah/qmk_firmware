@@ -149,8 +149,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
     }
 
-    // WINDOWS specific macros
     uint8_t current_layer = get_highest_layer(layer_state);
+
+    // MAC specific macros
+    if (current_layer == _MAC) {
+        if (record->event.pressed) {
+            switch (keycode) {
+
+                case KC_L:
+                    {
+                        // WIN + L -> WIN + CTRL + L
+                        if (mod_state & MOD_MASK_GUI) {
+                            add_mods(MOD_MASK_CTRL);
+                            tap_code(KC_Q);
+                            del_mods(MOD_MASK_CTRL);
+                        }
+                    }
+            }
+        }
+    }
+
+    // WINDOWS specific macros
     if (current_layer == _WINDOWS) {
         if (record->event.pressed) {
             switch (keycode) {
@@ -161,9 +180,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
                             // WIN + ALT + Left -> WIN + Left
                             if (mod_state & MOD_MASK_ALT) {
-                                del_mods(MOD_MASK_ALT);
-                                tap_code(KC_LEFT);
                                 set_mods(mod_state);
+                                tap_code(KC_LEFT);
+                                del_mods(MOD_MASK_ALT);
                                 return false;
                             }
 
