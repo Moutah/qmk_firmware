@@ -24,6 +24,7 @@ enum layers {
 #define C_END LCTL(KC_END)
 #define C_SLSH LCTL(KC_SLSH)
 #define T_CTLF4 LCTL_T(KC_F4)
+#define W_L LGUI(KC_L)
 
 #define _WHITE 255, 255, 255
 #define _OFF 0, 0, 0
@@ -62,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_WINDOWS_SUP] = LAYOUT_ansi_67(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, W_L,     _______, _______,          _______,          _______,
         _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, C_SLSH,           _______, C_HOME,
         _______, _______, _______,                            _______,                            _______, _______, _______, KC_HOME, C_END,   KC_END
     ),
@@ -84,11 +85,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_ADVANCED] = LAYOUT_ansi_67(
-        QK_BOOT, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_SLEP,          _______,
+        QK_BOOT, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,          _______,
         _______, _______, TO_WIN,  _______, RGB_MOD, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______, _______, RGB_SAI, _______, RGB_SPI, _______, RGB_HUI, _______, _______, RGB_VAI, _______, _______,          _______,          _______,
         _______,          _______, RGB_SAD, _______, RGB_SPD, _______, RGB_HUD, TO_MAC,  _______, RGB_VAD, _______,          _______, _______,
-        TO_LOK,  _______, _______,                            _______,                            _______, _______, _______, KC_MPRV, _______, KC_MNXT
+        TO_LOK,  _______, _______,                            KC_SLEP,                            _______, _______, _______, KC_MPRV, _______, KC_MNXT
     ),
 
 };
@@ -246,6 +247,11 @@ void matrix_scan_user(void) {
             SEND_STRING("``````" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) "\n\n" SS_TAP(X_LEFT));
         }
 
+        // c, c -> markdown code block but with auto second char (phpstorm)
+        SEQ_TWO_KEYS(KC_C, KC_C) {
+            SEND_STRING("``` \n\n" SS_TAP(X_LEFT));
+        }
+
         // 5 -> start phpstorm process
         SEQ_ONE_KEY(KC_5) {
             SEND_STRING(SS_DOWN(X_LCTL) SS_TAP(X_F5) SS_UP(X_LCTL));
@@ -349,7 +355,7 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(0, _BOOTLOADER_COLOR);
 
             // sleep
-            rgb_matrix_set_color(13, _SLEEP_COLOR);
+            rgb_matrix_set_color(60, _SLEEP_COLOR);
             break;
 
         default:
