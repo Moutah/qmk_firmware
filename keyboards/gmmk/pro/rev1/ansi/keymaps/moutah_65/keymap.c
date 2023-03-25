@@ -45,8 +45,11 @@ enum rgb_states {
 
 // deep blue h:226
 #define _COLOR_PRIMARY 8, 15, 38
+#define _COLOR_PRIMARY_STRONG 14, 53, 179
 // teal h:169
 #define _COLOR_SECONDARY 8, 38, 33
+#define _COLOR_SECONDARY_STRONG 14, 179, 148
+// dim blueish black
 #define _COLOR_ADVANCED_BACKGROUND 4, 4, 6
 // deep red
 #define _COLOR_BOOTLOADER 255, 12, 12
@@ -351,8 +354,8 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color_all(_COLOR_ADVANCED_BACKGROUND);
 
             // layers
-            rgb_matrix_set_color(14, 14, 53, 179); // _COLOR_PRIMARY
-            rgb_matrix_set_color(43, 14, 179, 148); // _COLOR_SECONDARY
+            rgb_matrix_set_color(14, _COLOR_PRIMARY_STRONG);
+            rgb_matrix_set_color(43, _COLOR_SECONDARY_STRONG);
 
             // music
             rgb_matrix_set_color(95, _COLOR_MEDIA);
