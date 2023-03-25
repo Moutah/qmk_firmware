@@ -13,14 +13,21 @@ enum layers {
     _WINDOWS_SUP,
     _MAC,
     _LOCKED,
-    _ADVANCED,
+    _COMMANDS,
+    _FUNCTIONS,
+};
+
+enum custom_keycodes {
+    _MD_CB = SAFE_RANGE,
+    _MD_CB2,
 };
 
 #define TO_WIN TO(_WINDOWS)
 #define TO_MAC TO(_MAC)
 #define TO_LOK TO(_LOCKED)
 #define MO_WSP MO(_WINDOWS_SUP)
-#define MO_ADV MO(_ADVANCED)
+#define MO_CMD MO(_COMMANDS)
+#define OS_FUN OSL(_FUNCTIONS)
 #define C_HOME LCTL(KC_HOME)
 #define C_END LCTL(KC_END)
 #define C_SLSH LCTL(KC_SLSH)
@@ -43,7 +50,7 @@ enum layers {
 // deep green
 #define _SLEEP_COLOR 12, 255, 12
 // pink
-#define _RGB_FUNCTION_COLOR 128, 51, 51
+#define _PAGE_COLOR 128, 51, 51
 // bright orange
 #define _FN_KEYS_COLOR 255, 192, 0
 // electric blue
@@ -57,9 +64,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_WINDOWS] = LAYOUT(
         KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,          KC_MPLY,
-        KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          XXXXXXX,
+        KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          RGB_TOG,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_DEL,
-        QK_LEAD, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           MO_ADV,
+        OS_FUN,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           MO_CMD,
         KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,   XXXXXXX,
         KC_LGUI, KC_LALT, KC_LCTL,                            KC_SPC,                             MO_WSP,  KC_RCTL, KC_RGUI, KC_LEFT, KC_DOWN, KC_RGHT
     ),
@@ -75,9 +82,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_MAC] = LAYOUT(
         KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  CAG_M,            KC_MPLY,
-        KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          XXXXXXX,
+        KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          RGB_TOG,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_DEL,
-        QK_LEAD, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           MO_ADV,
+        OS_FUN,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           MO_CMD,
         KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,   XXXXXXX,
         T_CTLF4, KC_LALT, KC_LGUI,                            KC_SPC,                             KC_RGUI, KC_RALT, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
     ),
@@ -86,18 +93,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
         RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          MO_ADV,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          MO_CMD,
         XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+        XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, RGB_HUD, XXXXXXX, RGB_HUI
     ),
 
-    [_ADVANCED] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        QK_BOOT, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,          _______,
-        _______, _______, TO_WIN,  _______, RGB_MOD, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, _______, RGB_SAI, _______, RGB_SPI, _______, RGB_HUI, _______, _______, RGB_VAI, _______, _______,          _______,          _______,
-        _______,          _______, RGB_SAD, _______, RGB_SPD, _______, RGB_HUD, TO_MAC,  _______, RGB_VAD, _______,          _______, _______, _______,
-        TO_LOK,  _______, _______,                            KC_SLEP,                            _______, _______, _______, KC_MPRV, _______, KC_MNXT
+    [_COMMANDS] = LAYOUT(
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        XXXXXXX, XXXXXXX, TO_WIN,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
+        XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO_MAC,  XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, KC_PGUP, XXXXXXX,
+        TO_LOK,  XXXXXXX, XXXXXXX,                            KC_SLEP,                            XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_PGDN, KC_MNXT
+    ),
+
+    [_FUNCTIONS] = LAYOUT(
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,          XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        KC_CAPS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
+        XXXXXXX,          XXXXXXX, XXXXXXX, _MD_CB,  XXXXXXX, _MD_CB2, KC_TILD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 
 };
@@ -156,6 +172,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
                 return true;
             }
+
+        // markdown code block
+        case _MD_CB:
+            {
+                if (record->event.pressed) {
+                    SEND_STRING("``````" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) "\n\n" SS_TAP(X_LEFT));
+                    return true;
+                }
+            }
+            
+        // markdown code block but with auto second char (as ide autocomplete)
+        case _MD_CB2:
+            {
+                if (record->event.pressed) {
+                    SEND_STRING("``` \n\n" SS_TAP(X_LEFT));
+                    return true;
+                }
+            }
+            
     }
 
     uint8_t current_layer = get_highest_layer(layer_state);
@@ -259,60 +294,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
-// *** Lead key
-
-bool is_leader_listening;
-
-LEADER_EXTERNS();
-
-void matrix_scan_user(void) {
-    LEADER_DICTIONARY() {
-        leading = false;
-        is_leader_listening = false;
-
-        // c -> markdown code block
-        SEQ_ONE_KEY(KC_C) {
-            SEND_STRING("``````" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) "\n\n" SS_TAP(X_LEFT));
-        }
-
-        // c, c -> markdown code block but with auto second char (phpstorm)
-        SEQ_TWO_KEYS(KC_C, KC_C) {
-            SEND_STRING("``` \n\n" SS_TAP(X_LEFT));
-        }
-
-        // 5 -> start phpstorm process
-        SEQ_ONE_KEY(KC_5) {
-            SEND_STRING(SS_DOWN(X_LCTL) SS_TAP(X_F5) SS_UP(X_LCTL));
-        }
-
-        // 5, 5 -> stops phpstorm process
-        SEQ_TWO_KEYS(KC_5, KC_5) {
-            SEND_STRING(SS_DOWN(X_LSFT) SS_TAP(X_F5) SS_UP(X_LSFT));
-        }
-
-        // n -> ~
-        SEQ_ONE_KEY(KC_N) {
-            SEND_STRING("~ ");
-        }
-
-        // caps lock
-        SEQ_ONE_KEY(KC_LEAD) {
-            tap_code(KC_CAPS);
-        }
-
-        leader_end();
-    }
-}
-
-
-void leader_start(void) {
-    is_leader_listening = true;
-}
-
-void leader_end(void) {
-    is_leader_listening = false;
-}
-
 // *** RGB
 
 bool rgb_matrix_indicators_user(void) {
@@ -324,19 +305,6 @@ bool rgb_matrix_indicators_user(void) {
     //  83, led 06   5, Ct_L   11,Win_L   17, Alt_L                     33, SPACE                     49, Alt_R   55, FN             65, Ct_R   95, Left   97, Down      79, Right      84, led 17
     //  87, led 07                                                                                                                                                                      88, led 18
     //  91, led 08                                                                                                                                                                      92, led 19
-
-    // leader key
-    if (is_leader_listening) {
-        rgb_matrix_set_color_all(_OFF);
-
-        rgb_matrix_set_color(3, _WHITE); // caps lock
-        rgb_matrix_set_color(29, _WHITE); // 5
-        rgb_matrix_set_color(22, _WHITE); // c
-        rgb_matrix_set_color(38, _WHITE); // n
-
-        return false;
-    }
-
 
     // by layer
     uint8_t current_layer = get_highest_layer(layer_state);
@@ -350,13 +318,31 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color_all(_SECONDARY_COLOR);
             break;
 
-        case _ADVANCED:
+        case _COMMANDS:
             rgb_matrix_set_color_all(_ADVANCED_BACKGROUND_COLOR);
 
             // layers
             rgb_matrix_set_color(14, _PRIMARY_COLOR);
             rgb_matrix_set_color(43, _SECONDARY_COLOR);
             rgb_matrix_set_color(5, _LOCKED_COLOR);
+
+            // music
+            rgb_matrix_set_color(95, _MEDIA_COLOR);
+            rgb_matrix_set_color(79, _MEDIA_COLOR);
+
+            // page up/down
+            rgb_matrix_set_color(94, _PAGE_COLOR);
+            rgb_matrix_set_color(97, _PAGE_COLOR);
+
+            // bootloader
+            rgb_matrix_set_color(1, _BOOTLOADER_COLOR);
+
+            // sleep
+            rgb_matrix_set_color(33, _SLEEP_COLOR);
+            break;
+
+        case _FUNCTIONS:
+            rgb_matrix_set_color_all(_ADVANCED_BACKGROUND_COLOR);
 
             // fn keys
             rgb_matrix_set_color(7, _FN_KEYS_COLOR);
@@ -372,21 +358,11 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(62, _FN_KEYS_COLOR);
             rgb_matrix_set_color(78, _FN_KEYS_COLOR);
 
-            // rgb functions
-            rgb_matrix_set_color(37, _RGB_FUNCTION_COLOR); // H
-            rgb_matrix_set_color(15, _RGB_FUNCTION_COLOR); // S
-            rgb_matrix_set_color(53, _RGB_FUNCTION_COLOR); // L
-            rgb_matrix_set_color(25, _RGB_FUNCTION_COLOR); // R (mode)
-            rgb_matrix_set_color(26, _RGB_FUNCTION_COLOR); // F (speed)
+            rgb_matrix_set_color(3, _WHITE); // caps lock
 
-            rgb_matrix_set_color(95, _MEDIA_COLOR); // left
-            rgb_matrix_set_color(79, _MEDIA_COLOR); // right
-
-            // bootloader
-            rgb_matrix_set_color(1, _BOOTLOADER_COLOR);
-
-            // sleep
-            rgb_matrix_set_color(33, _SLEEP_COLOR);
+            rgb_matrix_set_color(29, _WHITE); // b
+            rgb_matrix_set_color(22, _WHITE); // c
+            rgb_matrix_set_color(38, _WHITE); // n
             break;
 
         default:
