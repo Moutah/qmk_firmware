@@ -35,24 +35,22 @@ enum custom_keycodes {
 
 #define _WHITE 255, 255, 255
 #define _OFF 0, 0, 0
-// orange
-#define _PRIMARY_COLOR 195, 74, 0
-// green
-#define _SECONDARY_COLOR 71, 138, 0
-// purple
-#define _LOCKED_COLOR 153, 16, 212
-// dim orangish white
-#define _ADVANCED_BACKGROUND_COLOR 51, 50, 45
+
+// deep blue h:226
+#define _PRIMARY_COLOR 4, 15, 51
+// teal h:169
+#define _SECONDARY_COLOR 4, 51, 42
+#define _ADVANCED_BACKGROUND_COLOR 4, 4, 12
 // deep red
 #define _BOOTLOADER_COLOR 255, 12, 12
 // deep green
 #define _SLEEP_COLOR 12, 255, 12
 // pink
-#define _PAGE_COLOR 128, 51, 51
-// bright orange
-#define _FN_KEYS_COLOR 255, 192, 0
+#define _PAGE_COLOR 220, 54, 54
 // electric blue
-#define _MEDIA_COLOR 255, 255, 12
+#define _FN_KEYS_COLOR 4, 72, 217
+// yellow
+#define _MEDIA_COLOR 220, 200, 4
 
 // *** Layers
 
@@ -313,7 +311,6 @@ bool rgb_matrix_indicators_user(void) {
             // layers
             rgb_matrix_set_color(14, _PRIMARY_COLOR);
             rgb_matrix_set_color(43, _SECONDARY_COLOR);
-            rgb_matrix_set_color(5, _LOCKED_COLOR);
 
             // music
             rgb_matrix_set_color(95, _MEDIA_COLOR);
@@ -349,9 +346,9 @@ bool rgb_matrix_indicators_user(void) {
 
             rgb_matrix_set_color(3, _WHITE); // caps lock
 
-            rgb_matrix_set_color(29, _WHITE); // b
-            rgb_matrix_set_color(22, _WHITE); // c
-            rgb_matrix_set_color(38, _WHITE); // n
+            rgb_matrix_set_color(32, _FN_KEYS_COLOR); // b
+            rgb_matrix_set_color(22, _FN_KEYS_COLOR); // c
+            rgb_matrix_set_color(38, _FN_KEYS_COLOR); // n
             break;
 
         default:
