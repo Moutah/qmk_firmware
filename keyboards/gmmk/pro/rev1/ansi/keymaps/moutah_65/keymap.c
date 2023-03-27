@@ -2,7 +2,7 @@
  * GMMK PRO
  * Moutah 65
  *
- * Based on a 65% layout but for GGMK Pro which is a 75%.
+ * Based on a 65% layout but for GMMK Pro which is a 75%.
  * Synced with keychron\q2\ansi_encoder\keymaps\moutah_65. Has much brighter RGB values as the leds and keycaps make it dimmer.
  */
 
@@ -43,9 +43,9 @@ enum rgb_states {
 #define _COLOR_WHITE 255, 255, 255
 #define _COLOR_OFF 0, 0, 0
 
-// deep blue h:226
-#define _COLOR_PRIMARY 8, 15, 38
-#define _COLOR_PRIMARY_STRONG 14, 53, 179
+// deep blue h:238
+#define _COLOR_PRIMARY 8, 9, 38
+#define _COLOR_PRIMARY_STRONG 14, 20, 179
 // teal h:169
 #define _COLOR_SECONDARY 8, 38, 33
 #define _COLOR_SECONDARY_STRONG 14, 179, 148
