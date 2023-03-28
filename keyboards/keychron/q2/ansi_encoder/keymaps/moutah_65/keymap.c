@@ -8,9 +8,9 @@
 #include QMK_KEYBOARD_H
 
 enum layers {
+    _LAYER_MAC,
     _LAYER_WINDOWS,
     _LAYER_WINDOWS_SUP,
-    _LAYER_MAC,
     _LAYER_COMMANDS,
     _LAYER_FUNCTIONS,
 };
@@ -48,7 +48,7 @@ enum rgb_states {
 #define _COLOR_SECONDARY 31, 77, 15
 #define _COLOR_SECONDARY_STRONG 50, 128, 24
 // dim blueish white
-#define _COLOR_ADVANCED_BACKGROUND 45, 51, 50
+#define _COLOR_ADVANCED_BACKGROUND 25, 26, 26
 // deep red
 #define _COLOR_BOOTLOADER 255, 12, 12
 // deep green
@@ -67,6 +67,14 @@ int rgb_state = _RGB_STATE_DEFAULT;
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
+    [_LAYER_MAC] = LAYOUT_ansi_67(
+        KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_MPLY,
+        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_DEL,
+        QK_LEAD, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           MO_CMD,
+        KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,
+        T_CTLF4, KC_LALT, KC_LGUI,                            KC_SPC,                             KC_RGUI, KC_RALT, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
+    ),
+
     [_LAYER_WINDOWS] = LAYOUT_ansi_67(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_MPLY,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_DEL,
@@ -83,16 +91,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______,                            _______,                            _______, _______, _______, KC_HOME, C_END,   KC_END
     ),
 
-    [_LAYER_MAC] = LAYOUT_ansi_67(
-        KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_MPLY,
-        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_DEL,
-        QK_LEAD, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           MO_CMD,
-        KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,
-        T_CTLF4, KC_LALT, KC_LGUI,                            KC_SPC,                             KC_RGUI, KC_RALT, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
-    ),
-
     [_LAYER_COMMANDS] = LAYOUT_ansi_67(
-        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        QK_BOOT, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,          XXXXXXX,
         XXXXXXX, XXXXXXX, TO_WIN,  XXXXXXX, RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
         XXXXXXX, XXXXXXX, RGB_SAI, XXXXXXX, RGB_SPI, XXXXXXX, RGB_HUI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
         XXXXXXX,          RGB_SAD, XXXXXXX, RGB_SPD, XXXXXXX, RGB_HUD, XXXXXXX, TO_MAC,  XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, KC_PGUP,
@@ -340,6 +340,20 @@ bool rgb_matrix_indicators_user(void) {
 
         case _LAYER_COMMANDS:
             rgb_matrix_set_color_all(_COLOR_ADVANCED_BACKGROUND);
+
+            // fn keys
+            rgb_matrix_set_color(1, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(2, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(3, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(4, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(5, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(6, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(7, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(8, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(9, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(10, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(11, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(12, _COLOR_FN_KEYS);
 
             // layers
             rgb_matrix_set_color(17, _COLOR_PRIMARY_STRONG);
