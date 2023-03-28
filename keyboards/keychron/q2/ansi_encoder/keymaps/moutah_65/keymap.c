@@ -356,8 +356,8 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(12, _COLOR_FN_KEYS);
 
             // layers
-            rgb_matrix_set_color(17, _COLOR_PRIMARY_STRONG);
-            rgb_matrix_set_color(51, _COLOR_SECONDARY_STRONG);
+            rgb_matrix_set_color(51, _COLOR_PRIMARY_STRONG);
+            rgb_matrix_set_color(17, _COLOR_SECONDARY_STRONG);
 
             // music
             rgb_matrix_set_color(64, _COLOR_MEDIA);
