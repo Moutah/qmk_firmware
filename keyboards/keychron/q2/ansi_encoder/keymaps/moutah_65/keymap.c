@@ -19,6 +19,8 @@ enum custom_keycodes {
     _K_MDC = SAFE_RANGE,
     _K_MDC2,
     _K_RGB,
+    _K_MDTB,
+    _K_MDA,
 };
 
 enum rgb_states {
@@ -101,8 +103,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_LAYER_FUNCTIONS] = LAYOUT_ansi_67(
         XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,          XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-        KC_CAPS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _K_MDTB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        KC_CAPS, _K_MDA,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
         XXXXXXX,          XXXXXXX, XXXXXXX, _K_MDC,  XXXXXXX, _K_MDC2, KC_TILD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
@@ -177,6 +179,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             {
                 if (record->event.pressed) {
                     SEND_STRING("``` \n\n" SS_TAP(X_LEFT));
+                    return true;
+                }
+            }
+            
+        // markdown table part |---
+        case _K_MDTB:
+            {
+                if (record->event.pressed) {
+                    SEND_STRING("| --- ");
+                    return true;
+                }
+            }
+            
+        // markdown link
+        case _K_MDA:
+            {
+                if (record->event.pressed) {
+                    SEND_STRING("[]()" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT));
                     return true;
                 }
             }
@@ -393,6 +413,8 @@ bool rgb_matrix_indicators_user(void) {
 
             rgb_matrix_set_color(30, _COLOR_WHITE); // caps lock
 
+            rgb_matrix_set_color(20, _COLOR_FN_KEYS); // t
+            rgb_matrix_set_color(31, _COLOR_FN_KEYS); // a
             rgb_matrix_set_color(47, _COLOR_FN_KEYS); // b
             rgb_matrix_set_color(49, _COLOR_FN_KEYS); // c
             rgb_matrix_set_color(50, _COLOR_FN_KEYS); // n
