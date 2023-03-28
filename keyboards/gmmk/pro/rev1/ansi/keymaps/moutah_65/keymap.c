@@ -99,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_LAYER_COMMANDS] = LAYOUT(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        QK_BOOT, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,          XXXXXXX,
         XXXXXXX, XXXXXXX, TO_WIN,  XXXXXXX, RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
         XXXXXXX, XXXXXXX, RGB_SAI, XXXXXXX, RGB_SPI, XXXXXXX, RGB_HUI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
         XXXXXXX,          RGB_SAD, XXXXXXX, RGB_SPD, XXXXXXX, RGB_HUD, XXXXXXX, TO_MAC,  XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, KC_PGUP, XXXXXXX,
@@ -352,6 +352,20 @@ bool rgb_matrix_indicators_user(void) {
 
         case _LAYER_COMMANDS:
             rgb_matrix_set_color_all(_COLOR_ADVANCED_BACKGROUND);
+
+            // fn keys
+            rgb_matrix_set_color(7, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(13, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(19, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(24, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(29, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(35, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(40, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(45, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(51, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(57, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(62, _COLOR_FN_KEYS);
+            rgb_matrix_set_color(78, _COLOR_FN_KEYS);
 
             // layers
             rgb_matrix_set_color(14, _COLOR_PRIMARY_STRONG);
