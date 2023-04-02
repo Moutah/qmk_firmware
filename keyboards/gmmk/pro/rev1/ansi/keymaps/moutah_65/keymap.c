@@ -138,6 +138,23 @@ uint8_t mod_state;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     mod_state = get_mods();
 
+    // in RGB EPROM, disable all keys except RGB related ones
+    if (rgb_state == _RGB_STATE_EPROM) {
+        if (
+          keycode != _K_RGB
+          && keycode != MO_CMD
+          && keycode != RGB_MOD
+          && keycode != RGB_SAI
+          && keycode != RGB_SAD
+          && keycode != RGB_SPI
+          && keycode != RGB_HUI
+          && keycode != RGB_SPD
+          && keycode != RGB_HUD
+        ) {
+            return false;
+        }
+    }
+
     switch (keycode) {
 
         case KC_ESC:
