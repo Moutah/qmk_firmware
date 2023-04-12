@@ -7,6 +7,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include "stdio.h"
 
 enum layers {
     _LAYER_WINDOWS,
@@ -22,6 +23,7 @@ enum custom_keycodes {
     _K_RGB,
     _K_MDTB,
     _K_MDA,
+    _K_MTRX,
 };
 
 enum rgb_states {
@@ -65,6 +67,12 @@ enum rgb_states {
 #define _COLOR_MEDIA 220, 200, 4
 
 int rgb_state = _RGB_STATE_DEFAULT;
+
+typedef union {
+  uint32_t key_press_count;
+} user_config_t;
+
+user_config_t user_config;
 
 // *** Layers
 
@@ -112,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
         XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,          XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _K_MDTB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-        KC_CAPS, _K_MDA,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
+        KC_CAPS, _K_MDA,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _K_MTRX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
         XXXXXXX,          XXXXXXX, XXXXXXX, _K_MDC,  XXXXXXX, _K_MDC2, KC_TILD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
@@ -132,10 +140,23 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return false;
 }
 
+// *** Metrics
+
+void keyboard_post_init_user(void) {
+    user_config.key_press_count = eeconfig_read_user();
+    eeconfig_update_user(user_config.key_press_count);
+}
+
 // *** Custom keys
 
 uint8_t mod_state;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  
+    if (record->event.pressed) {
+        user_config.key_press_count++;
+        eeconfig_update_user(user_config.key_press_count);
+    }
+
     mod_state = get_mods();
 
     // in RGB EPROM, disable all keys except RGB related ones
@@ -244,6 +265,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                             rgb_state = _RGB_STATE_DEFAULT;
                             break;
                     }
+                    return true;
+                }
+            }
+            
+        // print key press metrics
+        case _K_MTRX:
+            {
+                if (record->event.pressed) {
+                    char str[40];
+                    sprintf(str, "[GMMK Pro] Key press count: %lu", user_config.key_press_count);
+                    SEND_STRING(str);
                     return true;
                 }
             }
