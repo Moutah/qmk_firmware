@@ -15,10 +15,10 @@ void record_key_pressed(void) {
     eeconfig_update_user(user_config.key_press_count);
 }
 
-bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state, uint8_t current_layer) {
-
+bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state, uint8_t current_layer, uint8_t main_layer) {
     // in RGB EPROM, disable all keys except RGB related ones
     if (rgb_state == _RGB_STATE_EPROM) {
+        // clang-format off
         if (
           keycode != _K_RGB
           && keycode != MO_CMD
@@ -31,6 +31,7 @@ bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state
           && keycode != RGB_SPD
           && keycode != RGB_HUD
         ) {
+            // clang-format on
             return false;
         }
     }
@@ -130,8 +131,14 @@ bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state
         }
     }
 
-    // MAC specific macros
-    if (current_layer == _LAYER_MAC) {
+    // *** MAC specific macros
+
+    // clang-format off
+    if (
+      (main_layer == _FOR_MAC && current_layer == _LAYER_MAIN)
+      || (main_layer == _FOR_WINDOWS && current_layer == _LAYER_SECONDARY)
+    ) {
+        // clang-format on
         if (record->event.pressed) {
             switch (keycode) {
                 case KC_L: {
@@ -146,8 +153,14 @@ bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state
         }
     }
 
-    // WINDOWS specific macros
-    if (current_layer == _LAYER_WINDOWS) {
+    // *** WINDOWS specific macros
+
+    // clang-format off
+    if (
+      (main_layer == _FOR_WINDOWS && current_layer == _LAYER_MAIN)
+      || (main_layer == _FOR_MAC && current_layer == _LAYER_SECONDARY)
+    ) {
+        // clang-format on
         if (record->event.pressed) {
             switch (keycode) {
                 case KC_LEFT: {
