@@ -23,7 +23,8 @@ enum custom_keycodes {
     _K_RGB,
     _K_MDTB,
     _K_MDA,
-    _K_MTRX,
+    _K_MX_O,
+    _K_MX_C,
 };
 
 enum rgb_states {

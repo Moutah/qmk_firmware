@@ -121,11 +121,20 @@ bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state
         }
 
         // print key press metrics
-        case _K_MTRX: {
+        case _K_MX_O: {
             if (record->event.pressed) {
-                char str[34];
-                sprintf(str, "[Q2] Key press count: %lu", user_config.key_press_count);
+                char str[11];
+                sprintf(str, "%lu", user_config.key_press_count);
                 SEND_STRING(str);
+                return true;
+            }
+        }
+
+        // reset key press metrics
+        case _K_MX_C: {
+            if (record->event.pressed) {
+                user_config.key_press_count = 0;
+                eeconfig_update_user(user_config.key_press_count);
                 return true;
             }
         }
