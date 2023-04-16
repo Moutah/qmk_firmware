@@ -16,6 +16,25 @@ void record_key_pressed(void) {
 }
 
 bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state, uint8_t current_layer) {
+
+    // in RGB EPROM, disable all keys except RGB related ones
+    if (rgb_state == _RGB_STATE_EPROM) {
+        if (
+          keycode != _K_RGB
+          && keycode != MO_CMD
+          && keycode != OS_FUN
+          && keycode != RGB_MOD
+          && keycode != RGB_SAI
+          && keycode != RGB_SAD
+          && keycode != RGB_SPI
+          && keycode != RGB_HUI
+          && keycode != RGB_SPD
+          && keycode != RGB_HUD
+        ) {
+            return false;
+        }
+    }
+
     switch (keycode) {
         case KC_ESC: {
             // Initialize a boolean variable that keeps track
