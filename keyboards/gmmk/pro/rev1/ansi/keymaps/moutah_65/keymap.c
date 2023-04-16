@@ -7,45 +7,7 @@
  */
 
 #include QMK_KEYBOARD_H
-#include "stdio.h"
-
-enum layers {
-    _LAYER_WINDOWS,
-    _LAYER_WINDOWS_SUP,
-    _LAYER_MAC,
-    _LAYER_COMMANDS,
-    _LAYER_FUNCTIONS,
-};
-
-enum custom_keycodes {
-    _K_MDC = SAFE_RANGE,
-    _K_MDC2,
-    _K_RGB,
-    _K_MDTB,
-    _K_MDA,
-    _K_MTRX,
-};
-
-enum rgb_states {
-    _RGB_STATE_DEFAULT = SAFE_RANGE,
-    _RGB_STATE_OFF,
-    _RGB_STATE_EPROM,
-};
-
-#define TO_WIN TO(_LAYER_WINDOWS)
-#define TO_MAC TO(_LAYER_MAC)
-#define MO_WSP MO(_LAYER_WINDOWS_SUP)
-#define MO_CMD MO(_LAYER_COMMANDS)
-#define OS_FUN OSL(_LAYER_FUNCTIONS)
-#define C_HOME LCTL(KC_HOME)
-#define C_END LCTL(KC_END)
-#define C_SLSH LCTL(KC_SLSH)
-#define T_CTLF4 LCTL_T(KC_F4)
-#define CAG_M LCAG(KC_M)
-#define W_L LGUI(KC_L)
-
-#define _COLOR_WHITE 255, 255, 255
-#define _COLOR_OFF 0, 0, 0
+#include "moutah_65.h"
 
 // deep blue h:238
 #define _COLOR_PRIMARY 8, 9, 38
@@ -65,14 +27,6 @@ enum rgb_states {
 #define _COLOR_FN_KEYS 4, 72, 217
 // yellow
 #define _COLOR_MEDIA 220, 200, 4
-
-int rgb_state = _RGB_STATE_DEFAULT;
-
-typedef union {
-  uint32_t key_press_count;
-} user_config_t;
-
-user_config_t user_config;
 
 // *** Layers
 
@@ -143,244 +97,20 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 // *** Metrics
 
 void keyboard_post_init_user(void) {
-    user_config.key_press_count = eeconfig_read_user();
-    eeconfig_update_user(user_config.key_press_count);
+    load_user_data();
 }
 
 // *** Custom keys
 
-uint8_t mod_state;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  
     if (record->event.pressed) {
-        user_config.key_press_count++;
-        eeconfig_update_user(user_config.key_press_count);
+        record_key_pressed();
     }
 
-    mod_state = get_mods();
-
-    // in RGB EPROM, disable all keys except RGB related ones
-    if (rgb_state == _RGB_STATE_EPROM) {
-        if (
-          keycode != _K_RGB
-          && keycode != MO_CMD
-          && keycode != RGB_MOD
-          && keycode != RGB_SAI
-          && keycode != RGB_SAD
-          && keycode != RGB_SPI
-          && keycode != RGB_HUI
-          && keycode != RGB_SPD
-          && keycode != RGB_HUD
-        ) {
-            return false;
-        }
-    }
-
-    switch (keycode) {
-
-        case KC_ESC:
-            {
-                // Initialize a boolean variable that keeps track
-                // of the delete key status: registered or not?
-                static bool grvkey_registered;
-
-                if (record->event.pressed) {
-
-                    // SHIFT + Esc
-                    if (mod_state & MOD_MASK_SHIFT) {
-                        // First temporarily canceling both shifts so that
-                        // shift isn't applied to the KC_GRV keycode
-                        del_mods(MOD_MASK_SHIFT);
-                        register_code(KC_GRV);
-                        // Update the boolean variable to reflect the status of KC_GRV
-                        grvkey_registered = true;
-                        // Reapplying modifier state so that the held shift key(s)
-                        // still work even after having tapped the Backspace/Delete key.
-                        set_mods(mod_state);
-                        return false;
-                    }
-
-                } else { // on release of KC_ESC
-                    // In case KC_GRV is still being sent even after the release of KC_ESC
-                    if (grvkey_registered) {
-                        unregister_code(KC_GRV);
-                        grvkey_registered = false;
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-        // markdown code block
-        case _K_MDC:
-            {
-                if (record->event.pressed) {
-                    SEND_STRING("``````" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) "\n\n" SS_TAP(X_LEFT));
-                    return true;
-                }
-            }
-            
-        // markdown code block but with auto second char (as ide autocomplete)
-        case _K_MDC2:
-            {
-                if (record->event.pressed) {
-                    SEND_STRING("``` \n\n" SS_TAP(X_LEFT));
-                    return true;
-                }
-            }
-            
-        // markdown table part |---
-        case _K_MDTB:
-            {
-                if (record->event.pressed) {
-                    SEND_STRING("| --- ");
-                    return true;
-                }
-            }
-            
-        // markdown link
-        case _K_MDA:
-            {
-                if (record->event.pressed) {
-                    SEND_STRING("[]()" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT));
-                    return true;
-                }
-            }
-            
-        // cycle through rgb state
-        case _K_RGB:
-            {
-                if (record->event.pressed) {
-                    switch (rgb_state) {
-                        case _RGB_STATE_DEFAULT:
-                            rgb_state = _RGB_STATE_OFF;
-                            break;
-
-                        case _RGB_STATE_OFF:
-                            rgb_state = _RGB_STATE_EPROM;
-                            break;
-
-                        case _RGB_STATE_EPROM:
-                            rgb_state = _RGB_STATE_DEFAULT;
-                            break;
-                    }
-                    return true;
-                }
-            }
-            
-        // print key press metrics
-        case _K_MTRX:
-            {
-                if (record->event.pressed) {
-                    char str[40];
-                    sprintf(str, "[GMMK Pro] Key press count: %lu", user_config.key_press_count);
-                    SEND_STRING(str);
-                    return true;
-                }
-            }
-            
-    }
-
+    uint8_t mod_state     = get_mods();
     uint8_t current_layer = get_highest_layer(layer_state);
 
-    // MAC specific macros
-    if (current_layer == _LAYER_MAC) {
-        if (record->event.pressed) {
-            switch (keycode) {
-
-                case KC_L:
-                    {
-                        // WIN + L -> WIN + CTRL + L
-                        if (mod_state & MOD_MASK_GUI) {
-                            add_mods(MOD_MASK_CTRL);
-                            tap_code(KC_Q);
-                            del_mods(MOD_MASK_CTRL);
-                        }
-                    }
-            }
-        }
-    }
-
-    // WINDOWS specific macros
-    if (current_layer == _LAYER_WINDOWS) {
-        if (record->event.pressed) {
-            switch (keycode) {
-
-                case KC_LEFT:
-                    {
-                        if (mod_state & MOD_MASK_GUI) {
-
-                            // WIN + ALT + Left -> WIN + Left
-                            if (mod_state & MOD_MASK_ALT) {
-                                del_mods(MOD_MASK_ALT);
-                                tap_code(KC_LEFT);
-                                set_mods(mod_state);
-                                return false;
-                            }
-
-                            // WIN + Left -> WIN + CTRL + LEFT
-                            else {
-                                add_mods(MOD_MASK_CTRL);
-                                tap_code(KC_LEFT);
-                                set_mods(mod_state);
-                                return false;
-                            }
-
-                        }
-                    }
-
-                case KC_RIGHT:
-                    {
-                        if (mod_state & MOD_MASK_GUI) {
-
-                            // WIN + ALT + Right -> WIN + Right
-                            if (mod_state & MOD_MASK_ALT) {
-                                del_mods(MOD_MASK_ALT);
-                                tap_code(KC_RIGHT);
-                                set_mods(mod_state);
-                                return false;
-                            }
-
-                            // WIN + Right -> WIN + CTRL + Right
-                            else {
-                                add_mods(MOD_MASK_CTRL);
-                                tap_code(KC_RIGHT);
-                                set_mods(mod_state);
-                                return false;
-                            }
-
-                        }
-                    }
-
-                case KC_UP:
-                    {
-                        // WIN + Up -> WIN + Tab
-                        if (mod_state & MOD_MASK_GUI) {
-                            tap_code(KC_TAB);
-                            return false;
-                        }
-                    }
-
-                case KC_ENT:
-                    {
-                        // WIN + ALT + Enter -> WIN + Up
-                        if (mod_state & MOD_MASK_GUI) {
-                            if (mod_state & MOD_MASK_ALT) {
-                                del_mods(MOD_MASK_ALT);
-                                tap_code(KC_UP);
-                                set_mods(mod_state);
-                                return false;
-                            }
-                        }
-                    }
-
-            }
-        }
-    }
-
-    // Let QMK process the keycode as usual
-    return true;
+    return handle_custom_keys(keycode, record, mod_state, current_layer);
 };
 
 // *** RGB
@@ -475,7 +205,7 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(3, _COLOR_WHITE); // caps lock
 
             rgb_matrix_set_color(30, _COLOR_FN_KEYS); // t
-            rgb_matrix_set_color(9, _COLOR_FN_KEYS); // a
+            rgb_matrix_set_color(9, _COLOR_FN_KEYS);  // a
             rgb_matrix_set_color(32, _COLOR_FN_KEYS); // b
             rgb_matrix_set_color(22, _COLOR_FN_KEYS); // c
             rgb_matrix_set_color(38, _COLOR_FN_KEYS); // n
