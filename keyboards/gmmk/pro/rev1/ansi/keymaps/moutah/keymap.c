@@ -8,12 +8,10 @@
 #include QMK_KEYBOARD_H
 #include "moutah.h"
 
-// deep blue h:238
-#define _COLOR_PRIMARY 8, 9, 38
-#define _COLOR_PRIMARY_STRONG 4, 72, 217
-// teal h:169
-#define _COLOR_SECONDARY 8, 38, 33
-#define _COLOR_SECONDARY_STRONG 12, 243, 201
+// blue
+#define _COLOR_WINDOWS 72, 72, 255
+// teal
+#define _COLOR_MAC 0, 172, 42
 // dim blueish black
 #define _COLOR_ADVANCED_BACKGROUND 2, 2, 3
 // deep red
@@ -21,7 +19,7 @@
 // deep green
 #define _COLOR_SLEEP 12, 255, 12
 // pink
-#define _COLOR_FN_KEYS 220, 54, 54
+#define _COLOR_FN_KEYS 235, 50, 96
 // yellow
 #define _COLOR_MEDIA 220, 200, 4
 
@@ -158,9 +156,9 @@ bool rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(38, _COLOR_FN_KEYS);
 
             // 14 W : win layer
-            rgb_matrix_set_color(14, _COLOR_PRIMARY_STRONG);
+            rgb_matrix_set_color(14, _COLOR_WINDOWS);
             // 43 M : mac layer
-            rgb_matrix_set_color(43, _COLOR_SECONDARY_STRONG);
+            rgb_matrix_set_color(43, _COLOR_MAC);
 
             // 33 Space : sleep
             rgb_matrix_set_color(33, _COLOR_SLEEP);
@@ -178,10 +176,10 @@ bool rgb_matrix_indicators_user(void) {
 
             // 0 esc : layer witness
             if (base_layer == _LAYER_MAIN) {
-                rgb_matrix_set_color(0, _COLOR_PRIMARY_STRONG);
+                rgb_matrix_set_color(0, _COLOR_WINDOWS);
             }
             if (base_layer == _LAYER_SECONDARY) {
-                rgb_matrix_set_color(0, _COLOR_SECONDARY_STRONG);
+                rgb_matrix_set_color(0, _COLOR_MAC);
             }
             break;
 
