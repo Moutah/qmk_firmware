@@ -4,6 +4,27 @@
 user_config_t user_config;
 
 int rgb_state = _RGB_STATE_DEFAULT;
+int base_layer = _LAYER_MAIN;
+
+int constrainIntToEightBit(int value, bool is_loop) {
+  if (value < 0) {
+    return is_loop ? 255 : 0;
+  }
+
+  if (value > 255) {
+    return is_loop ? 0 : 255;
+  }
+
+  return value;
+}
+
+void updateHSVBy(int delta_hue, int delta_saturation, int delta_lightness) {
+    uint8_t hue = constrainIntToEightBit(rgblight_get_hue() + delta_hue, true);
+    uint8_t sat = constrainIntToEightBit(rgblight_get_sat() + delta_saturation, false);
+    uint8_t lightness = constrainIntToEightBit(rgblight_get_val() + delta_lightness, false);
+
+    rgblight_sethsv(hue, sat, lightness);
+}
 
 void load_user_data(void) {
     user_config.key_press_count = eeconfig_read_user();
@@ -15,58 +36,16 @@ void record_key_pressed(void) {
     eeconfig_update_user(user_config.key_press_count);
 }
 
-bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state, uint8_t current_layer, uint8_t main_layer) {
-//    // in RGB EPROM, disable all keys except RGB related ones
-//    if (rgb_state == _RGB_STATE_EPROM) {
-//        // clang-format off
-//        if (
-//          keycode != _K_RGB
-//          && keycode != MO_CMD
-//          && keycode != OS_FUN
-//          && keycode != RGB_MOD
-//          && keycode != RGB_SAI
-//          && keycode != RGB_SAD
-//          && keycode != RGB_SPI
-//          && keycode != RGB_HUI
-//          && keycode != RGB_SPD
-//          && keycode != RGB_HUD
-//        ) {
-//            // clang-format on
-//            return false;
-//        }
-//    }
+void turnVolume(bool clockwise) {
+    if (clockwise) {
+        tap_code(KC_VOLU);
+    } else {
+        tap_code(KC_VOLD);
+    }
+}
 
+bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state, uint8_t current_layer, uint8_t main_layer) {
     switch (keycode) {
-//        case KC_ESC: {
-//            // Initialize a boolean variable that keeps track
-//            // of the delete key status: registered or not?
-//            static bool grvkey_registered;
-//
-//            if (record->event.pressed) {
-//                // Only overtake if shift
-//                if (mod_state & MOD_MASK_SHIFT) {
-//                    // First temporarily canceling both shifts so that
-//                    // shift isn't applied to the KC_GRV keycode
-//                    del_mods(MOD_MASK_SHIFT);
-//                    register_code(KC_GRV);
-//                    // Update the boolean variable to reflect the status of KC_GRV
-//                    grvkey_registered = true;
-//                    // Reapplying modifier state so that the held shift key(s)
-//                    // still work even after having tapped the Backspace/Delete key.
-//                    set_mods(mod_state);
-//                    return false;
-//                }
-//            } else { // on release of KC_ESC
-//                // In case KC_GRV is still being sent even after the release of KC_ESC
-//                if (grvkey_registered) {
-//                    unregister_code(KC_GRV);
-//                    grvkey_registered = false;
-//                    return false;
-//                }
-//            }
-//
-//            return true;
-//        }
 
         // markdown code block
         case _K_MDC: {
@@ -108,22 +87,35 @@ bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state
             }
         }
 
-        // cycle through rgb state
+        // *** Layers
+
+        case TO_MAIN: {
+            if (record->event.pressed) {
+                base_layer = _LAYER_MAIN;
+                return true;
+            }
+        }
+
+        case TO_SEC: {
+            if (record->event.pressed) {
+                base_layer = _LAYER_SECONDARY;
+                return true;
+            }
+        }
+
+        // *** Data output
+
+        // print current color HSV
         case _K_RGB: {
             if (record->event.pressed) {
-                switch (rgb_state) {
-                    case _RGB_STATE_DEFAULT:
-                        rgb_state = _RGB_STATE_OFF;
-                        break;
+                // Get the current rgblight color components
+                uint8_t hue = rgblight_get_hue();
+                uint8_t sat = rgblight_get_sat();
+                uint8_t lightness = rgblight_get_val();
 
-                    case _RGB_STATE_OFF:
-//                        rgb_state = _RGB_STATE_EPROM;
-//                        break;
-//
-//                    case _RGB_STATE_EPROM:
-                        rgb_state = _RGB_STATE_DEFAULT;
-                        break;
-                }
+                char str[24];
+                sprintf(str, "H:%u S:%u V:%u", hue, sat, lightness);
+                SEND_STRING(str);
                 return true;
             }
         }

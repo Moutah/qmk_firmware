@@ -10,7 +10,7 @@
 
 // deep blue h:238
 #define _COLOR_PRIMARY 8, 9, 38
-#define _COLOR_PRIMARY_STRONG 12, 20, 243
+#define _COLOR_PRIMARY_STRONG 4, 72, 217
 // teal h:169
 #define _COLOR_SECONDARY 8, 38, 33
 #define _COLOR_SECONDARY_STRONG 12, 243, 201
@@ -21,9 +21,7 @@
 // deep green
 #define _COLOR_SLEEP 12, 255, 12
 // pink
-#define _COLOR_PAGE 220, 54, 54
-// electric blue
-#define _COLOR_FN_KEYS 4, 72, 217
+#define _COLOR_FN_KEYS 220, 54, 54
 // yellow
 #define _COLOR_MEDIA 220, 200, 4
 
@@ -62,9 +60,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_LAYER_COMMANDS] = LAYOUT(
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          RGB_TOG,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,          XXXXXXX,
-        XXXXXXX, XXXXXXX, TO_MAIN, XXXXXXX, XXXXXXX, _K_MDTB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          _K_MX_C,
+        XXXXXXX, XXXXXXX, TO_MAIN, XXXXXXX, _K_RGB,  _K_MDTB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          _K_MX_C,
         KC_CAPS, _K_MDA,  XXXXXXX, XXXXXXX, _K_AFN,  XXXXXXX, XXXXXXX, XXXXXXX, _K_MX_O, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
         XXXXXXX,          XXXXXXX, XXXXXXX, _K_MDC,  XXXXXXX, _K_MDC2, KC_TILD, TO_SEC,  XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX,                            KC_SLEP,                            XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, XXXXXXX, KC_MNXT
@@ -75,13 +73,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // *** Rotary encoder
 
+// set to return false to counteract enabled encoder in pro.c
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (clockwise) {
-        tap_code(KC_VOLU);
-    } else {
-        tap_code(KC_VOLD);
+    uint8_t mod_state = get_mods();
+
+    int hsvDeltaValue = 4 * (clockwise ? 1 : -1);
+
+    if (mod_state & MOD_MASK_SHIFT) {
+        updateHSVBy(hsvDeltaValue, 0, 0);
+        return false;
     }
-    // return true; //set to return false to counteract enabled encoder in pro.c
+
+    if (mod_state & MOD_MASK_ALT) {
+        updateHSVBy(0, hsvDeltaValue, 0);
+        return false;
+    }
+
+    if (mod_state & MOD_MASK_CTRL) {
+        updateHSVBy(0, 0, hsvDeltaValue);
+        return false;
+    }
+
+    turnVolume(clockwise);
     return false;
 }
 
@@ -128,75 +141,49 @@ bool rgb_matrix_indicators_user(void) {
         case _LAYER_COMMANDS:
             rgb_matrix_set_color_all(_COLOR_ADVANCED_BACKGROUND);
 
-            //  3 caps CMD
+            //  3 caps : CMD
             rgb_matrix_set_color(3, _COLOR_WHITE);
 
-            //  9 A []()
+            //  9 A : []()
             rgb_matrix_set_color(9, _COLOR_FN_KEYS);
-            // 26 F () => {}
+            // 26 F : () => {}
             rgb_matrix_set_color(26, _COLOR_FN_KEYS);
-            // 22 C ```
+            // 22 C : ```
             rgb_matrix_set_color(22, _COLOR_FN_KEYS);
-            // 30 T |---
+            // 30 T : |---
             rgb_matrix_set_color(30, _COLOR_FN_KEYS);
-            // 32 B ```
+            // 32 B : ```
             rgb_matrix_set_color(32, _COLOR_FN_KEYS);
-            // 38 N ~
+            // 38 N : ~
             rgb_matrix_set_color(38, _COLOR_FN_KEYS);
 
-            // 14 W win layer
+            // 14 W : win layer
             rgb_matrix_set_color(14, _COLOR_PRIMARY_STRONG);
-            // 43 M mac layer
+            // 43 M : mac layer
             rgb_matrix_set_color(43, _COLOR_SECONDARY_STRONG);
 
-            // 33 Space sleep
+            // 33 Space : sleep
             rgb_matrix_set_color(33, _COLOR_SLEEP);
 
             // 47 K keyboard metrics
             // 75 del clear keyboard
 
-            // 95 <- media prev
+            // 95 <- : media prev
             rgb_matrix_set_color(95, _COLOR_MEDIA);
-            // 79 -> media next
+            // 79 -> : media next
             rgb_matrix_set_color(79, _COLOR_MEDIA);
 
-            // 85 bckspace QK_BOOT
+            // 85 bckspace : QK_BOOT
             rgb_matrix_set_color(85, _COLOR_BOOTLOADER);
 
-            // esc
-            if (layer_state_is(_LAYER_MAIN) || layer_state_is(_LAYER_WINDOWS_SUP)) {
-                rgb_matrix_set_color(0, _COLOR_PRIMARY);
+            // 0 esc : layer witness
+            if (base_layer == _LAYER_MAIN) {
+                rgb_matrix_set_color(0, _COLOR_PRIMARY_STRONG);
             }
-            if (layer_state_is(_LAYER_SECONDARY)) {
-                rgb_matrix_set_color(0, _COLOR_SECONDARY);
+            if (base_layer == _LAYER_SECONDARY) {
+                rgb_matrix_set_color(0, _COLOR_SECONDARY_STRONG);
             }
             break;
-
-//        case _LAYER_FUNCTIONS:
-//            rgb_matrix_set_color_all(_COLOR_ADVANCED_BACKGROUND);
-//
-//            // fn keys
-//            rgb_matrix_set_color(7, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(13, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(19, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(24, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(29, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(35, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(40, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(45, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(51, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(57, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(62, _COLOR_FN_KEYS);
-//            rgb_matrix_set_color(78, _COLOR_FN_KEYS);
-//
-//            rgb_matrix_set_color(3, _COLOR_WHITE); // caps lock
-//
-//            rgb_matrix_set_color(30, _COLOR_FN_KEYS); // t
-//            rgb_matrix_set_color(9, _COLOR_FN_KEYS);  // a
-//            rgb_matrix_set_color(32, _COLOR_FN_KEYS); // b
-//            rgb_matrix_set_color(22, _COLOR_FN_KEYS); // c
-//            rgb_matrix_set_color(38, _COLOR_FN_KEYS); // n
-//            break;
 
         default:
             break;

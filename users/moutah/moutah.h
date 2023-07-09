@@ -9,7 +9,6 @@ enum layers {
     _LAYER_SECONDARY,
     _LAYER_WINDOWS_SUP,
     _LAYER_COMMANDS,
-//    _LAYER_FUNCTIONS,
 };
 
 enum layers_for_os {
@@ -38,8 +37,6 @@ enum rgb_states {
 #define TO_SEC TO(_LAYER_SECONDARY)
 #define MO_WSP MO(_LAYER_WINDOWS_SUP)
 #define OS_CMD OSL(_LAYER_COMMANDS)
-//#define MO_CMD MO(_LAYER_COMMANDS)
-//#define OS_FUN OSL(_LAYER_FUNCTIONS)
 #define C_HOME LCTL(KC_HOME)
 #define C_END LCTL(KC_END)
 #define C_SLSH LCTL(KC_SLSH)
@@ -53,13 +50,17 @@ typedef union {
 } user_config_t;
 
 int rgb_state;
+int base_layer;
 
 // common colors
 #define _COLOR_WHITE 255, 255, 255
 #define _COLOR_OFF 0, 0, 0
 
+int constrainIntToEightBit(int value, bool is_loop);
+void updateHSVBy(int delta_hue, int delta_saturation, int delta_lightness);
 void load_user_data(void);
 void record_key_pressed(void);
+void turnVolume(bool clockwise);
 bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state, uint8_t current_layer, uint8_t layer_for);
 
 #endif
