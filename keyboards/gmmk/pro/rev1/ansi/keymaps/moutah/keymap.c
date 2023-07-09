@@ -1,81 +1,79 @@
+/**
+ * GMMK PRO
+ * Moutah
+ *
+ * Synced with keychron\q11\ansi_encoder\keymaps\moutah. Has much brighter RGB values as the leds and keycaps make it dimmer.
+ */
+
 #include QMK_KEYBOARD_H
+#include "moutah.h"
 
-enum layers {
-    _WINDOWS,
-    _WINDOWS_SUP,
-    _MAC,
-    _LOCKED,
-    _ADVANCED,
-};
+// deep blue h:238
+#define _COLOR_PRIMARY 8, 9, 38
+#define _COLOR_PRIMARY_STRONG 12, 20, 243
+// teal h:169
+#define _COLOR_SECONDARY 8, 38, 33
+#define _COLOR_SECONDARY_STRONG 12, 243, 201
+// dim blueish black
+#define _COLOR_ADVANCED_BACKGROUND 2, 2, 3
+// deep red
+#define _COLOR_BOOTLOADER 255, 12, 12
+// deep green
+#define _COLOR_SLEEP 12, 255, 12
+// pink
+#define _COLOR_PAGE 220, 54, 54
+// electric blue
+#define _COLOR_FN_KEYS 4, 72, 217
+// yellow
+#define _COLOR_MEDIA 220, 200, 4
 
-#define TO_WIN TO(_WINDOWS)
-#define TO_MAC TO(_MAC)
-#define TO_LOK TO(_LOCKED)
-#define MO_WSP MO(_WINDOWS_SUP)
-#define MO_ADV MO(_ADVANCED)
-#define C_HOME LCTL(KC_HOME)
-#define C_END LCTL(KC_END)
-
-#define _WINDOWS_COLOR_RGB 195, 74, 0
-#define _MAC_COLOR_RGB 71, 138, 0
-#define _LOCKED_COLOR_RGB 123, 31, 162
-
-#define _WHITE 255, 255, 255
-#define _RED 250, 12, 12
-#define _BLUE 12, 12, 250
-#define _BLACK 0, 0, 0
-#define _PINK 255, 153, 153
+// *** Layers
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    [_WINDOWS] = LAYOUT(
+    // windows
+    [_LAYER_MAIN] = LAYOUT(
         KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_INS,           KC_MPLY,
-        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          XXXXXXX,
+        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_PGUP,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_DEL,
-        KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           MO_ADV,
+        OS_CMD,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           KC_PGDN,
         KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,   XXXXXXX,
         KC_LGUI, KC_LALT, KC_LCTL,                            KC_SPC,                             MO_WSP,  KC_RCTL, KC_RGUI, KC_LEFT, KC_DOWN, KC_RGHT
     ),
 
-    [_WINDOWS_SUP] = LAYOUT(
+    // mac
+    [_LAYER_SECONDARY] = LAYOUT(
+        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_INS,           KC_MPLY,
+        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_PGUP,
+        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_DEL,
+        OS_CMD,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           KC_PGDN,
+        KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,   XXXXXXX,
+        T_CTLF4, KC_LALT, KC_LGUI,                            KC_SPC,                             KC_RGUI, KC_RALT, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
+    ),
+
+    [_LAYER_WINDOWS_SUP] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          _______,
-        _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, C_HOME,  _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, W_L,     _______, _______,          _______,          _______,
+        _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, C_SLSH,           _______, C_HOME,  _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, KC_HOME, C_END,   KC_END
     ),
 
-    [_MAC] = LAYOUT(
-        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_INS,           KC_MPLY,
-        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          XXXXXXX,
-        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_DEL,
-        KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           MO_ADV,
-        KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,   XXXXXXX,
-        KC_LCTL, KC_LALT, KC_LGUI,                            KC_SPC,                             KC_RGUI, KC_RALT, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
-    ),
-
-    [_LOCKED] = LAYOUT(
-        RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+    [_LAYER_COMMANDS] = LAYOUT(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          MO_ADV,
-        XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-    ),
-
-    [_ADVANCED] = LAYOUT(
-        QK_BOOT, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, _______, KC_SLEP,          _______,
-        _______, TO_WIN,  TO_MAC,  TO_LOK,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        RGB_TOG, RGB_VAI, RGB_HUI, RGB_SAI, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, RGB_VAD, RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          _______,
-        _______,          _______, _______, _______, _______, _______, NK_TOGG, _______, _______, _______, _______,          _______, RGB_MOD, _______,
-        _______, _______, _______,                            _______,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,          XXXXXXX,
+        XXXXXXX, XXXXXXX, TO_MAIN, XXXXXXX, XXXXXXX, _K_MDTB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          _K_MX_C,
+        KC_CAPS, _K_MDA,  XXXXXXX, XXXXXXX, _K_AFN,  XXXXXXX, XXXXXXX, XXXXXXX, _K_MX_O, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
+        XXXXXXX,          XXXXXXX, XXXXXXX, _K_MDC,  XXXXXXX, _K_MDC2, KC_TILD, TO_SEC,  XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX,                            KC_SLEP,                            XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, XXXXXXX, KC_MNXT
     ),
 
 };
 // clang-format on
+
+// *** Rotary encoder
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (clockwise) {
@@ -87,106 +85,147 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return false;
 }
 
-//  67, led 01   0, ESC    6, F1      12, F2      18, F3   23, F4   28, F5      34, F6   39, F7   44, F8      50, F9   56, F10   61, F11    66, F12    69, Prt       Rotary(Mute)   68, led 12
-//  70, led 02   1, ~      7, 1       13, 2       19, 3    24, 4    29, 5       35, 6    40, 7    45, 8       51, 9    57, 0     62, -_     78, (=+)   85, BackSpc   72, Home       71, led 13
-//  73, led 03   2, Tab    8, Q       14, W       20. E    25, R    30, T       36, Y    41, U    46, I       52, O    58, P     63, [{     89, ]}     93, \|        75, PgUp       74, led 14
-//  76, led 04   3, Caps   9, A       15, S       21, D    26, F    31, G       37, H    42, J    47, K       53, L    59, ;:    64, '"                96, Enter     86, PgDn       77, led 15
-//  80, led 05   4, Sh_L   10, Z      16, X       22, C    27, V    32, B       38, N    43, M    48, ,<      54, .<   60, /?               90, Sh_R   94, Up        82, End        81, led 16
-//  83, led 06   5, Ct_L   11,Win_L   17, Alt_L                     33, SPACE                     49, Alt_R   55, FN             65, Ct_R   95, Left   97, Down      79, Right      84, led 17
-//  87, led 07                                                                                                                                                                      88, led 18
-//  91, led 08                                                                                                                                                                      92, led 19
+// *** Metrics
 
-bool rgb_matrix_indicators_user(void) {
+void keyboard_post_init_user(void) {
+    load_user_data();
+}
+
+// *** Custom keys
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        record_key_pressed();
+    }
+
+    uint8_t mod_state     = get_mods();
     uint8_t current_layer = get_highest_layer(layer_state);
 
+    return handle_custom_keys(keycode, record, mod_state, current_layer, _FOR_WINDOWS);
+};
+
+// *** RGB
+
+bool rgb_matrix_indicators_user(void) {
+    //  67, led 01   0, ESC    6, F1      12, F2      18, F3   23, F4   28, F5      34, F6   39, F7   44, F8      50, F9   56, F10   61, F11    66, F12    69, Prt       Rotary(Mute)   68, led 12
+    //  70, led 02   1, ~      7, 1       13, 2       19, 3    24, 4    29, 5       35, 6    40, 7    45, 8       51, 9    57, 0     62, -_     78, (=+)   85, BackSpc   72, Home       71, led 13
+    //  73, led 03   2, Tab    8, Q       14, W       20. E    25, R    30, T       36, Y    41, U    46, I       52, O    58, P     63, [{     89, ]}     93, \|        75, PgUp       74, led 14
+    //  76, led 04   3, Caps   9, A       15, S       21, D    26, F    31, G       37, H    42, J    47, K       53, L    59, ;:    64, '"                96, Enter     86, PgDn       77, led 15
+    //  80, led 05   4, Sh_L   10, Z      16, X       22, C    27, V    32, B       38, N    43, M    48, ,<      54, .<   60, /?               90, Sh_R   94, Up        82, End        81, led 16
+    //  83, led 06   5, Ct_L   11,Win_L   17, Alt_L                     33, SPACE                     49, Alt_R   55, FN             65, Ct_R   95, Left   97, Down      79, Right      84, led 17
+    //  87, led 07                                                                                                                                                                      88, led 18
+    //  91, led 08                                                                                                                                                                      92, led 19
+
+    // no rgb
+    if (rgb_state == _RGB_STATE_OFF) {
+        rgb_matrix_set_color_all(_COLOR_OFF);
+        return false;
+    }
+
+    // custom layer rgb
+    uint8_t current_layer = get_highest_layer(layer_state);
     switch (current_layer) {
-        case _WINDOWS:
-        case _WINDOWS_SUP:
-            rgb_matrix_set_color_all(_WINDOWS_COLOR_RGB);
+        case _LAYER_COMMANDS:
+            rgb_matrix_set_color_all(_COLOR_ADVANCED_BACKGROUND);
+
+            //  3 caps CMD
+            rgb_matrix_set_color(3, _COLOR_WHITE);
+
+            //  9 A []()
+            rgb_matrix_set_color(9, _COLOR_FN_KEYS);
+            // 26 F () => {}
+            rgb_matrix_set_color(26, _COLOR_FN_KEYS);
+            // 22 C ```
+            rgb_matrix_set_color(22, _COLOR_FN_KEYS);
+            // 30 T |---
+            rgb_matrix_set_color(30, _COLOR_FN_KEYS);
+            // 32 B ```
+            rgb_matrix_set_color(32, _COLOR_FN_KEYS);
+            // 38 N ~
+            rgb_matrix_set_color(38, _COLOR_FN_KEYS);
+
+            // 14 W win layer
+            rgb_matrix_set_color(14, _COLOR_PRIMARY_STRONG);
+            // 43 M mac layer
+            rgb_matrix_set_color(43, _COLOR_SECONDARY_STRONG);
+
+            // 33 Space sleep
+            rgb_matrix_set_color(33, _COLOR_SLEEP);
+
+            // 47 K keyboard metrics
+            // 75 del clear keyboard
+
+            // 95 <- media prev
+            rgb_matrix_set_color(95, _COLOR_MEDIA);
+            // 79 -> media next
+            rgb_matrix_set_color(79, _COLOR_MEDIA);
+
+            // 85 bckspace QK_BOOT
+            rgb_matrix_set_color(85, _COLOR_BOOTLOADER);
+
+            // esc
+            if (layer_state_is(_LAYER_MAIN) || layer_state_is(_LAYER_WINDOWS_SUP)) {
+                rgb_matrix_set_color(0, _COLOR_PRIMARY);
+            }
+            if (layer_state_is(_LAYER_SECONDARY)) {
+                rgb_matrix_set_color(0, _COLOR_SECONDARY);
+            }
             break;
 
-        case _MAC:
-            rgb_matrix_set_color_all(_MAC_COLOR_RGB);
-            break;
-
-        case _ADVANCED:
-            rgb_matrix_set_color_all(_BLACK);
-
-            // 1 key = WINDOWS layer
-            rgb_matrix_set_color(7, _WINDOWS_COLOR_RGB);
-
-            // 2 key = MAC layer
-            rgb_matrix_set_color(13, _MAC_COLOR_RGB);
-
-            // 3 key = LOCKED layer
-            rgb_matrix_set_color(19, _LOCKED_COLOR_RGB);
-
-            // fn key
-            rgb_matrix_set_color(86, _BLUE);
-
-            // esc key
-            rgb_matrix_set_color(0, _RED);
-
-            // printscreen key
-            rgb_matrix_set_color(69, _PINK);
-
-            // left side
-            rgb_matrix_set_color(67, _BLUE);
-            rgb_matrix_set_color(70, _BLUE);
-            rgb_matrix_set_color(73, _BLUE);
-            rgb_matrix_set_color(76, _BLUE);
-            rgb_matrix_set_color(80, _BLUE);
-            rgb_matrix_set_color(83, _BLUE);
-            rgb_matrix_set_color(87, _BLUE);
-            rgb_matrix_set_color(91, _BLUE);
-
-            // right side
-            rgb_matrix_set_color(68, _BLUE);
-            rgb_matrix_set_color(71, _BLUE);
-            rgb_matrix_set_color(74, _BLUE);
-            rgb_matrix_set_color(77, _BLUE);
-            rgb_matrix_set_color(81, _BLUE);
-            rgb_matrix_set_color(84, _BLUE);
-            rgb_matrix_set_color(88, _BLUE);
-            rgb_matrix_set_color(92, _BLUE);
-            break;
+//        case _LAYER_FUNCTIONS:
+//            rgb_matrix_set_color_all(_COLOR_ADVANCED_BACKGROUND);
+//
+//            // fn keys
+//            rgb_matrix_set_color(7, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(13, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(19, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(24, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(29, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(35, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(40, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(45, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(51, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(57, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(62, _COLOR_FN_KEYS);
+//            rgb_matrix_set_color(78, _COLOR_FN_KEYS);
+//
+//            rgb_matrix_set_color(3, _COLOR_WHITE); // caps lock
+//
+//            rgb_matrix_set_color(30, _COLOR_FN_KEYS); // t
+//            rgb_matrix_set_color(9, _COLOR_FN_KEYS);  // a
+//            rgb_matrix_set_color(32, _COLOR_FN_KEYS); // b
+//            rgb_matrix_set_color(22, _COLOR_FN_KEYS); // c
+//            rgb_matrix_set_color(38, _COLOR_FN_KEYS); // n
+//            break;
 
         default:
             break;
     }
 
+    // caps lock
     if (host_keyboard_led_state().caps_lock) {
-        rgb_matrix_set_color(0, _WHITE);  // ESC
-        rgb_matrix_set_color(6, _WHITE);  // F1
-        rgb_matrix_set_color(12, _WHITE); // F2
-        rgb_matrix_set_color(18, _WHITE); // F3
-        rgb_matrix_set_color(23, _WHITE); // F4
-        rgb_matrix_set_color(28, _WHITE); // F5
-        rgb_matrix_set_color(34, _WHITE); // F6
-        rgb_matrix_set_color(39, _WHITE); // F7
-        rgb_matrix_set_color(44, _WHITE); // F8
-        rgb_matrix_set_color(50, _WHITE); // F9
-        rgb_matrix_set_color(56, _WHITE); // F10
-        rgb_matrix_set_color(61, _WHITE); // F11
-        rgb_matrix_set_color(66, _WHITE); // F12
-        rgb_matrix_set_color(69, _WHITE); // Prt
-        rgb_matrix_set_color(67, _WHITE); // Left side LED 1
-        rgb_matrix_set_color(68, _WHITE); // Right side LED 1
-        rgb_matrix_set_color(70, _WHITE); // Left side LED 2
-        rgb_matrix_set_color(71, _WHITE); // Right side LED 2
-        rgb_matrix_set_color(73, _WHITE); // Left side LED 3
-        rgb_matrix_set_color(74, _WHITE); // Right side LED 3
-        rgb_matrix_set_color(76, _WHITE); // Left side LED 4
-        rgb_matrix_set_color(77, _WHITE); // Right side LED 4
-        rgb_matrix_set_color(80, _WHITE); // Left side LED 5
-        rgb_matrix_set_color(81, _WHITE); // Right side LED 5
-        rgb_matrix_set_color(83, _WHITE); // Left side LED 6
-        rgb_matrix_set_color(84, _WHITE); // Right side LED 6
-        rgb_matrix_set_color(87, _WHITE); // Left side LED 7
-        rgb_matrix_set_color(88, _WHITE); // Right side LED 7
-        rgb_matrix_set_color(91, _WHITE); // Left side LED 8
-        rgb_matrix_set_color(92, _WHITE); // Right side LED 8
-        rgb_matrix_set_color(3, _WHITE);  // CAPS LED
+        rgb_matrix_set_color(72, _COLOR_WHITE); // Home
+        rgb_matrix_set_color(75, _COLOR_WHITE); // PgUp
+        rgb_matrix_set_color(86, _COLOR_WHITE); // PgDn
+        rgb_matrix_set_color(82, _COLOR_WHITE); // End
+
+        rgb_matrix_set_color(67, _COLOR_WHITE); // Left side LED 1
+        rgb_matrix_set_color(68, _COLOR_WHITE); // Right side LED 1
+        rgb_matrix_set_color(70, _COLOR_WHITE); // Left side LED 2
+        rgb_matrix_set_color(71, _COLOR_WHITE); // Right side LED 2
+        rgb_matrix_set_color(73, _COLOR_WHITE); // Left side LED 3
+        rgb_matrix_set_color(74, _COLOR_WHITE); // Right side LED 3
+        rgb_matrix_set_color(76, _COLOR_WHITE); // Left side LED 4
+        rgb_matrix_set_color(77, _COLOR_WHITE); // Right side LED 4
+        rgb_matrix_set_color(80, _COLOR_WHITE); // Left side LED 5
+        rgb_matrix_set_color(81, _COLOR_WHITE); // Right side LED 5
+        rgb_matrix_set_color(83, _COLOR_WHITE); // Left side LED 6
+        rgb_matrix_set_color(84, _COLOR_WHITE); // Right side LED 6
+        rgb_matrix_set_color(87, _COLOR_WHITE); // Left side LED 7
+        rgb_matrix_set_color(88, _COLOR_WHITE); // Right side LED 7
+        rgb_matrix_set_color(91, _COLOR_WHITE); // Left side LED 8
+        rgb_matrix_set_color(92, _COLOR_WHITE); // Right side LED 8
+        rgb_matrix_set_color(3, _COLOR_WHITE);  // CAPS LED
     }
 
     return false;
