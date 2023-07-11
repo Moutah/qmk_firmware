@@ -176,9 +176,9 @@ bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state
                     if (mod_state & MOD_MASK_GUI) {
                         // WIN + ALT + Left -> WIN + Left
                         if (mod_state & MOD_MASK_ALT) {
-                            set_mods(mod_state);
-                            tap_code(KC_LEFT);
                             del_mods(MOD_MASK_ALT);
+                            tap_code(KC_LEFT);
+                            set_mods(mod_state);
                             return false;
                         }
 
