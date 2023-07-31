@@ -43,6 +43,11 @@ enum rgb_states {
 #define T_CTLF4 LCTL_T(KC_F4)
 #define CAG_M LCAG(KC_M)
 #define W_L LGUI(KC_L)
+#define HYPR_1 HYPR(KC_1)
+#define HYPR_2 HYPR(KC_2)
+#define HYPR_3 HYPR(KC_3)
+#define HYPR_4 HYPR(KC_4)
+#define HYPR_5 HYPR(KC_5)
 
 // user data
 typedef union {
