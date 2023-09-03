@@ -48,6 +48,12 @@ enum rgb_states {
 #define HYPR_3 HYPR(KC_3)
 #define HYPR_4 HYPR(KC_4)
 #define HYPR_5 HYPR(KC_5)
+#define HYPR_6 HYPR(KC_6)
+#define HYPR_F1 HYPR(KC_F1)
+#define HYPR_F2 HYPR(KC_F2)
+#define HYPR_F3 HYPR(KC_F3)
+#define HYPR_F4 HYPR(KC_F4)
+#define HYPR_F5 HYPR(KC_F5)
 
 // user data
 typedef union {
