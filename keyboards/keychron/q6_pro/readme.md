@@ -1,12 +1,12 @@
 # Keychron Q6 Pro
 
-![Keychron Q6 Pro](https://i.imgur.com/DCqv0RE.jpg)
+![Keychron Q6 Pro]
 
 A customizable 96% keyboard.
 
 * Keyboard Maintainer: [Keychron](https://github.com/keychron)
 * Hardware Supported: Keychron Q6 Pro
-* Hardware Availability:[Keychron Q6 Pro QMK/VIA Wireless Custom Mechanical Keyboard](https://www.keychron.com/products/keychron-q6-pro-qmk-via-wireless-custom-mechanical-keyboard)
+* Hardware Availability:
 
 Make example for this keyboard (after setting up your build environment):
 

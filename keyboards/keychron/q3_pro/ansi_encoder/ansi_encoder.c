@@ -38,6 +38,7 @@ const ckled2001_led g_ckled2001_leds[RGB_MATRIX_LED_COUNT] = {
     {0, I_11,   G_11,   H_11},
     {0, I_12,   G_12,   H_12},
     {0, I_13,   G_13,   H_13},
+    // {0, I_14,   G_14,   H_14}, // Encoder
     {0, I_15,   G_15,   H_15},
     {0, I_16,   G_16,   H_16},
     {1, C_4,    A_4,    B_4},  // 16

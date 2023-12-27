@@ -40,13 +40,29 @@
 #    define CAPS_LOCK_INDEX 50
 #    define LOW_BAT_IND_INDEX 79
 
+// RGB Matrix Animation modes. Explicitly enabled
+// For full list of effects, see:
+// https://docs.qmk.fm/#/feature_rgb_matrix?id=rgb-matrix-effects
 #    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
 #    define RGB_MATRIX_KEYPRESSES
 
-/* Use the first 9 channels of led driver */
+/* Scan phase of led driver set as MSKPHASE_9CHANNEL(defined as 0x03 in CKLED2001.h) */
 #    define PHASE_CHANNEL MSKPHASE_9CHANNEL
 
 /* Set LED driver current */
 #    define CKLED2001_CURRENT_TUNE \
         { 0x28, 0x28, 0x28, 0x28, 0x28, 0x28, 0x28, 0x28, 0x28, 0x28, 0x28, 0x28 }
+
+#    ifdef KC_BLUETOOTH_ENABLE
+#        define HOST_DEVICES_COUNT 3
+#        define HOST_LED_MATRIX_LIST \
+            { 17, 18, 19 }
+#        define BAT_LEVEL_LED_LIST \
+            { 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 }
+#    endif
+#endif
+
+#ifdef KC_BLUETOOTH_ENABLE
+#    define BAT_LOW_LED_PIN A10
+#    define BAT_LOW_LED_PIN_ON_STATE 1
 #endif

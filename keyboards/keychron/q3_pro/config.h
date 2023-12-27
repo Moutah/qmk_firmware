@@ -20,7 +20,8 @@
 #define RGB_DISABLE_WHEN_USB_SUSPENDED
 
 /* DIP switch for Mac/win OS switch */
-#define DIP_SWITCH_PINS { A8 }
+#define DIP_SWITCH_PINS \
+    { A8 }
 
 /* Increase I2C speed to 1000 KHz */
 #define I2C1_TIMINGR_PRESC 0U
@@ -40,19 +41,9 @@
 #    define USB_POWER_SENSE_PIN B1
 #    define USB_POWER_CONNECTED_LEVEL 0
 
-#    define BAT_LOW_LED_PIN_STATE 1
-
-#    define HOST_DEVICES_COUNT 3
-
 #    if defined(RGB_MATRIX_ENABLE)
 
 #        define LED_DRIVER_SHUTDOWN_PIN C14
-
-#        define HOST_LED_MATRIX_LIST \
-            { 17, 18, 19 }
-
-#        define BAT_LEVEL_LED_LIST \
-            { 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 }
 
 /* Backlit disable timeout when keyboard is disconnected(unit: second) */
 #        define DISCONNECTED_BACKLIGHT_DISABLE_TIMEOUT 40
@@ -75,9 +66,7 @@
 #endif // KC_BLUETOOTH_ENABLE
 
 /* Encoder Configuration */
-#ifdef ENCODER_ENABLE
-#    define ENCODER_DEFAULT_POS 0x3
-#endif
+#define ENCODER_DEFAULT_POS 0x3
 
 /* Emulated EEPROM configuration */
 #define FEE_DENSITY_BYTES FEE_PAGE_SIZE
