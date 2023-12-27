@@ -122,6 +122,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // *** RGB
 
+#ifdef RGB_MATRIX_ENABLE
 bool rgb_matrix_indicators_user(void) {
     // I have no idea WTF the led indexes are :(
 
@@ -174,4 +175,5 @@ bool rgb_matrix_indicators_user(void) {
 
     return true;
 }
+#endif
 
