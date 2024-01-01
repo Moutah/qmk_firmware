@@ -7,8 +7,9 @@
 enum layers {
     _LAYER_MAIN,
     _LAYER_SECONDARY,
-    _LAYER_WINDOWS_SUP,
+//    _LAYER_WINDOWS_SUP,
     _LAYER_COMMANDS,
+    _LAYER_LOCKED,
 };
 
 enum layers_for_os {
@@ -35,6 +36,7 @@ enum rgb_states {
 // custom keys
 #define TO_MAIN TO(_LAYER_MAIN)
 #define TO_SEC TO(_LAYER_SECONDARY)
+#define TO_LOCK TO(_LAYER_LOCKED)
 #define MO_WSP MO(_LAYER_WINDOWS_SUP)
 #define OS_CMD OSL(_LAYER_COMMANDS)
 #define C_HOME LCTL(KC_HOME)

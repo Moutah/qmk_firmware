@@ -114,7 +114,7 @@ bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state
                 uint8_t lightness = rgblight_get_val();
 
                 char str[24];
-                sprintf(str, "H:%u S:%u V:%u", hue, sat, lightness);
+                sprintf(str, "h%us%uv%u", hue, sat, lightness);
                 SEND_STRING(str);
                 return true;
             }
