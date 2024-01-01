@@ -7,7 +7,7 @@
 enum layers {
     _LAYER_MAIN,
     _LAYER_SECONDARY,
-    _LAYER_WINDOWS_SUP,
+//    _LAYER_WINDOWS_SUP,
     _LAYER_COMMANDS,
 };
 
@@ -54,6 +54,8 @@ enum rgb_states {
 #define HYPR_F3 HYPR(KC_F3)
 #define HYPR_F4 HYPR(KC_F4)
 #define HYPR_F5 HYPR(KC_F5)
+#define HYPR_F13 HYPR(KC_F13)
+#define HYPR_F14 HYPR(KC_F14)
 
 // user data
 typedef union {
