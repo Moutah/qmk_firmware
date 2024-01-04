@@ -13,13 +13,14 @@
 // teal
 #define _COLOR_MAC 0, 172, 42
 // dim blueish black
+#define _COLOR_ADVANCED 102, 102, 203
 #define _COLOR_ADVANCED_BACKGROUND 2, 2, 3
 // deep red
 #define _COLOR_BOOTLOADER 255, 12, 12
 // deep green
 #define _COLOR_SLEEP 12, 255, 12
 // pink
-#define _COLOR_FN_KEYS 235, 50, 96
+#define _COLOR_QUICK_LAUNCH 235, 50, 96
 // yellow
 #define _COLOR_MEDIA 220, 200, 4
 
@@ -136,51 +137,71 @@ bool rgb_matrix_indicators_user(void) {
     // custom layer rgb
     uint8_t current_layer = get_highest_layer(layer_state);
     switch (current_layer) {
-        case _LAYER_COMMANDS:
+       case _LAYER_COMMANDS:
             rgb_matrix_set_color_all(_COLOR_ADVANCED_BACKGROUND);
+            rgb_matrix_set_color(69, _COLOR_ADVANCED);
 
-            //  3 caps : CMD
-            rgb_matrix_set_color(3, _COLOR_WHITE);
+            // f9 : rgb
+            rgb_matrix_set_color(50, _COLOR_WHITE);
 
-            //  9 A : []()
-            rgb_matrix_set_color(9, _COLOR_FN_KEYS);
-            // 26 F : () => {}
-            rgb_matrix_set_color(26, _COLOR_FN_KEYS);
-            // 22 C : ```
-            rgb_matrix_set_color(22, _COLOR_FN_KEYS);
-            // 30 T : |---
-            rgb_matrix_set_color(30, _COLOR_FN_KEYS);
-            // 32 B : ```
-            rgb_matrix_set_color(32, _COLOR_FN_KEYS);
-            // 38 N : ~
-            rgb_matrix_set_color(38, _COLOR_FN_KEYS);
+            // \ : bootloader
+            rgb_matrix_set_color(93, _COLOR_BOOTLOADER);
 
-            // 14 W : win layer
+            // 1, 2, 3, 4, 5, 6 : quick launch
+            rgb_matrix_set_color(7, _COLOR_QUICK_LAUNCH);
+            rgb_matrix_set_color(13, _COLOR_QUICK_LAUNCH);
+            rgb_matrix_set_color(19, _COLOR_QUICK_LAUNCH);
+            rgb_matrix_set_color(24, _COLOR_QUICK_LAUNCH);
+            rgb_matrix_set_color(29, _COLOR_QUICK_LAUNCH);
+            rgb_matrix_set_color(35, _COLOR_QUICK_LAUNCH);
+
+            // w, m : layers
             rgb_matrix_set_color(14, _COLOR_WINDOWS);
-            // 43 M : mac layer
             rgb_matrix_set_color(43, _COLOR_MAC);
 
-            // 33 Space : sleep
+            // r : output rgb value
+            rgb_matrix_set_color(25, _COLOR_WHITE);
+
+            // t : | ---
+            rgb_matrix_set_color(30, _COLOR_WHITE);
+
+            // a : []()
+            rgb_matrix_set_color(9, _COLOR_WHITE);
+
+            // f : () => {}
+            rgb_matrix_set_color(26, _COLOR_WHITE);
+
+            // l & r shift : caps lock
+            rgb_matrix_set_color(4, _COLOR_WHITE);
+            rgb_matrix_set_color(90, _COLOR_WHITE);
+
+            // c : ```\n\n ```
+            rgb_matrix_set_color(2, _COLOR_WHITE);
+
+            // b : ```\n\n
+            rgb_matrix_set_color(32, _COLOR_WHITE);
+
+            // space : sleep
             rgb_matrix_set_color(33, _COLOR_SLEEP);
 
-            // 47 K keyboard metrics
-            // 75 del clear keyboard
-
-            // 95 <- : media prev
+            // left & right : next / prev media
             rgb_matrix_set_color(95, _COLOR_MEDIA);
-            // 79 -> : media next
             rgb_matrix_set_color(79, _COLOR_MEDIA);
+            break;
 
-            // 85 bckspace : QK_BOOT
-            rgb_matrix_set_color(85, _COLOR_BOOTLOADER);
+        case _LAYER_MAIN:
+            // layer indicator
+            rgb_matrix_set_color(69, _COLOR_MAC);
+            break;
 
-            // 0 esc : layer witness
-            if (base_layer == _LAYER_MAIN) {
-                rgb_matrix_set_color(0, _COLOR_WINDOWS);
-            }
-            if (base_layer == _LAYER_SECONDARY) {
-                rgb_matrix_set_color(0, _COLOR_MAC);
-            }
+        case _LAYER_SECONDARY:
+            // layer indicator
+            rgb_matrix_set_color(69, _COLOR_WINDOWS);
+            break;
+
+        case _LAYER_LOCKED:
+            // layer indicator
+            rgb_matrix_set_color(69, _COLOR_OFF);
             break;
 
         default:
@@ -189,10 +210,7 @@ bool rgb_matrix_indicators_user(void) {
 
     // caps lock
     if (host_keyboard_led_state().caps_lock) {
-        rgb_matrix_set_color(72, _COLOR_WHITE); // Home
-        rgb_matrix_set_color(75, _COLOR_WHITE); // PgUp
-        rgb_matrix_set_color(86, _COLOR_WHITE); // PgDn
-        rgb_matrix_set_color(82, _COLOR_WHITE); // End
+        rgb_matrix_set_color(69, _COLOR_WHITE);
 
         rgb_matrix_set_color(67, _COLOR_WHITE); // Left side LED 1
         rgb_matrix_set_color(68, _COLOR_WHITE); // Right side LED 1
@@ -210,7 +228,6 @@ bool rgb_matrix_indicators_user(void) {
         rgb_matrix_set_color(88, _COLOR_WHITE); // Right side LED 7
         rgb_matrix_set_color(91, _COLOR_WHITE); // Left side LED 8
         rgb_matrix_set_color(92, _COLOR_WHITE); // Right side LED 8
-        rgb_matrix_set_color(3, _COLOR_WHITE);  // CAPS LED
     }
 
     return false;
