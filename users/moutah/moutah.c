@@ -36,6 +36,14 @@ void record_key_pressed(void) {
     eeconfig_update_user(user_config.key_press_count);
 }
 
+void updateRGBSpeed(bool clockwise) {
+    if (clockwise) {
+        rgblight_increase_speed();
+    } else {
+        rgblight_decrease_speed();
+    }
+}
+
 void turnVolume(bool clockwise) {
     if (clockwise) {
         tap_code(KC_VOLU);

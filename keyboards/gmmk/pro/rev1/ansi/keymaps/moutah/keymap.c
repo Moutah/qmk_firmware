@@ -102,6 +102,11 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         return false;
     }
 
+    if (mod_state & MOD_MASK_GUI) {
+        updateRGBSpeed(clockwise);
+        return false;
+    }
+
     turnVolume(clockwise);
     return false;
 }
@@ -200,12 +205,12 @@ bool rgb_matrix_indicators_user(void) {
 
         case _LAYER_MAIN:
             // layer indicator
-            rgb_matrix_set_color(69, _COLOR_MAC);
+            rgb_matrix_set_color(69, _COLOR_WINDOWS);
             break;
 
         case _LAYER_SECONDARY:
             // layer indicator
-            rgb_matrix_set_color(69, _COLOR_WINDOWS);
+            rgb_matrix_set_color(69, _COLOR_MAC);
             break;
 
         case _LAYER_LOCK:

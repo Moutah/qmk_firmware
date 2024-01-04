@@ -75,6 +75,7 @@ int constrainIntToEightBit(int value, bool is_loop);
 void updateHSVBy(int delta_hue, int delta_saturation, int delta_lightness);
 void load_user_data(void);
 void record_key_pressed(void);
+void updateRGBSpeed(bool clockwise);
 void turnVolume(bool clockwise);
 bool handle_custom_keys(uint16_t keycode, keyrecord_t *record, uint8_t mod_state, uint8_t current_layer, uint8_t layer_for);
 
