@@ -36,6 +36,7 @@ enum rgb_states {
 // custom keys
 #define TO_MAIN TO(_LAYER_MAIN)
 #define TO_SEC TO(_LAYER_SECONDARY)
+#define TO_LOK TO(_LAYER_LOCK)
 #define MO_WSP MO(_LAYER_WINDOWS_SUP)
 #define OS_CMD OSL(_LAYER_COMMANDS)
 #define C_HOME LCTL(KC_HOME)
