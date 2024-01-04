@@ -7,8 +7,9 @@
 enum layers {
     _LAYER_MAIN,
     _LAYER_SECONDARY,
-//    _LAYER_WINDOWS_SUP,
+    _LAYER_WINDOWS_SUP,
     _LAYER_COMMANDS,
+    _LAYER_LOCK,
 };
 
 enum layers_for_os {
