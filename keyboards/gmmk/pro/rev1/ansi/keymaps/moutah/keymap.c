@@ -13,7 +13,7 @@
 // teal
 #define _COLOR_MAC 0, 172, 42
 // dim blueish black
-#define _COLOR_ADVANCED 102, 102, 203
+#define _COLOR_ADVANCED 128, 128, 255
 #define _COLOR_ADVANCED_BACKGROUND 2, 2, 3
 // deep red
 #define _COLOR_BOOTLOADER 255, 12, 12
